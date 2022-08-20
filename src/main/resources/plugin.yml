@@ -1,0 +1,4 @@
+name: factions-scoreboard
+version: '${version}'
+main: com.powdermc.scoreboard.ScoreboardPlugin
+depend: [ Factions, MassiveCore, Vault, PlayerPoints ]

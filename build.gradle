@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group 'com.powdermc'
+version '1.0.0-ALPHA'
+
+tasks.build.dependsOn 'shadowJar'
+
+repositories {
+    mavenCentral()
+
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven { url 'https://maven.elmakers.com/repository/' }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+
+    implementation 'fr.mrmicky:fastboard:1.2.1'
+    compileOnly fileTree('libs')
+
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+
+    var lombok = 'org.projectlombok:lombok:1.18.24'
+    compileOnly lombok
+    annotationProcessor lombok
+}
+
+compileJava {
+    options.encoding 'UTF-8'
+
+    sourceCompatibility '1.8'
+    targetCompatibility '1.8'
+}
+
+shadowJar {
+    archiveName("${project.name}-${project.version}.jar")
+    relocate 'fr.mrmicky.fastboard', 'com.yourpackage.fastboard'
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
